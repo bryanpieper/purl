@@ -1,0 +1,23 @@
+A Python Django short url generator. 
+
+./settings.py:
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.admin',
+    'purl',
+)
+
+./urls.py:
+
+from django.conf.urls.defaults import *
+from django.contrib import admin
+admin.autodiscover()
+urlpatterns = patterns('',
+    (r'^r/', include('purl.urls')),
+    (r'^admin/(.*)', admin.site.root),
+)
+
