@@ -24,7 +24,7 @@ THE SOFTWARE.
 """
 
 from django.db import models
-import hashlib, time
+import binascii, random
 
 
 class ShortUrl(models.Model):
@@ -44,7 +44,7 @@ class ShortUrl(models.Model):
     campaign_name = models.CharField(max_length=255, null=True, blank=True)
     campaign_term = models.CharField(max_length=255, null=True, blank=True)
 
-    def save(self, force_insert=False, force_update=False, token_len=5):
+    def save(self, force_insert=False, force_update=False, token_len=4):
         """ 
         Saves the url. If insert, generate surl unique token (alias)
         """
@@ -61,21 +61,12 @@ class ShortUrl(models.Model):
         super(ShortUrl, self).save(force_insert, force_update) 
 
 
-    def gen_token(self, token_len=5):
+    def gen_token(self, token_len=4):
         """
         Generates a random token based on redirect_href 
         """
-        h = hashlib.new('ripemd160')
-        h.update(self.redirect_href)
-        h.update(str(time.time()))
-        token = h.hexdigest()
-        token_start = 0
-        for i, c in enumerate(token):
-            if c.isdigit():
-               token_start = i + 1
-            else:
-                break        
-        return token[token_start:(token_len + token_start)]
+        token_src = binascii.b2a_base64(self.redirect_href)[:-3]
+        return ''.join(random.sample(token_src, token_len)).lower()
     
     def __unicode__(self):
         return ', '.join([self.surl, self.redirect_href])
@@ -87,6 +78,9 @@ class ShortUrl(models.Model):
     
     
 class SUrlHit(models.Model):
+    """ 
+    Url hit tracking
+    """
     created = models.DateTimeField(auto_now_add=True)
     ip_address = models.IPAddressField()
     user_agent = models.CharField(max_length=255, blank=True)
