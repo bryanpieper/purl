@@ -20,7 +20,7 @@ class ShortUrl(models.Model):
     campaign_name = models.CharField(max_length=255, null=True, blank=True)
     campaign_term = models.CharField(max_length=255, null=True, blank=True)
 
-    def save(self, force_insert=False, force_update=False, token_len=3):
+    def save(self, force_insert=False, force_update=False, token_len=4):
         """ 
         Saves the url. If insert, generate surl unique token (alias)
         """
@@ -37,7 +37,7 @@ class ShortUrl(models.Model):
         super(ShortUrl, self).save(force_insert, force_update) 
 
 
-    def gen_token(self, token_len=3):
+    def gen_token(self, token_len=4):
         """
         Generates a random token based on redirect_href 
         """
