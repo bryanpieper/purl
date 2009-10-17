@@ -1,5 +1,5 @@
 A simple Python Django short url generator. Create urls from the Django admin app. 
-This app will generate over 34,000 unique urls using an alias length of 4 characters. 
+This app will generate over 580,000 unique urls using an alias length of 5 characters. 
 Allows you to attach Google Analytics campaign data to each shortened url.
 
 ./settings.py:
