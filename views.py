@@ -29,7 +29,7 @@ def short_url(request, url_token):
     Appends Google Analytics campaign data if given.
     """
     from purl.models import ShortUrl
-    from django.http import HttpResponseRedirect
+    from django.http import HttpResponsePermanentRedirect
     from django.core.urlresolvers import reverse
     url_token = url_token.lower()
     redirect = reverse('homepage')
@@ -75,5 +75,5 @@ def short_url(request, url_token):
         hit.referer = request.META.get('HTTP_REFERER', '')
         hit.save()
     
-    return HttpResponseRedirect(redirect)
+    return HttpResponsePermanentRedirect(redirect)
    
